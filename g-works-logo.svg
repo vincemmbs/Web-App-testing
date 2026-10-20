@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 150" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">G Works - Doors and Windows</title>
+  <desc id="logo-description">Door and window emblem beside the G Works wordmark.</desc>
+  <g fill="none" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M14 137V12h68v31" stroke="#102744" stroke-width="12"/>
+    <path d="M111 43a48 48 0 1 0 0 91V86h-37" stroke="#102744" stroke-width="12"/>
+    <path d="M76 48v79" stroke="#5c6870" stroke-width="10"/>
+    <path d="M101 61v17M114 59v13M96 96h25M108 85v29" stroke="#5c6870" stroke-width="8"/>
+  </g>
+  <text x="157" y="83" fill="#102744" font-family="Arial, sans-serif" font-size="62" font-weight="600">G Works</text>
+  <text x="160" y="119" fill="#5c6870" font-family="Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="3">DOORS &amp; WINDOWS</text>
+</svg>

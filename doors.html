@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5c6870">
+  <meta name="description" content="Explore door styles from G Works - Doors and Windows.">
+  <title>Door Styles | G Works</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #26343b;
+      --muted: #5c6870;
+      --paper: #f4f6f7;
+      --primary: #5c6870;
+      --accent: #14a2dc;
+      font-family: Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+
+    .site-header {
+      min-height: 82px;
+      padding: 12px 6.2%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--paper);
+    }
+    .brand-logo { display: block; width: 205px; height: auto; }
+    .home-link {
+      padding: 12px 16px;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font: 13px "Russo One", sans-serif;
+      text-decoration: none;
+    }
+    .home-link:hover { background: var(--primary); color: white; }
+
+    .page-intro { padding: 76px 10.5% 82px; background: var(--primary); color: white; }
+    .eyebrow {
+      margin: 0 0 17px;
+      color: #a9def1;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    h1, h2 { font-family: "Russo One", sans-serif; font-weight: 400; }
+    h1 { max-width: 820px; margin: 0 0 20px; font-size: clamp(42px, 7vw, 82px); line-height: 1.03; }
+    .page-intro > p:last-child { max-width: 560px; margin: 0; color: rgba(255,255,255,.8); font-size: 16px; line-height: 1.75; }
+
+    .catalog { padding: 72px 8.5% 92px; }
+    .catalog-heading { margin-bottom: 30px; display: flex; align-items: end; justify-content: space-between; gap: 25px; }
+    .catalog-heading h2 { max-width: 560px; margin: 0; font-size: clamp(29px, 4vw, 45px); line-height: 1.1; }
+    .catalog-heading p { max-width: 300px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .samples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 42px 24px; }
+    .sample { min-width: 0; }
+    .sample-image { aspect-ratio: 1.55; overflow: hidden; background: #cbd8de; }
+    .sample-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 450ms ease; }
+    .sample:hover img { transform: scale(1.025); }
+    .sample-info { padding-top: 16px; }
+    .sample-meta { margin-bottom: 7px; display: flex; align-items: baseline; justify-content: space-between; gap: 15px; }
+    .sample h2 { margin: 0; font-size: 25px; }
+    .sample-number { color: #087dac; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+    .sample-info p { max-width: 520px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+
+    .next-step {
+      padding: 54px 8.5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 26px;
+      background: var(--accent);
+    }
+    .next-step h2 { max-width: 650px; margin: 0; font-size: clamp(30px, 4.5vw, 48px); line-height: 1.08; }
+    .contact-link {
+      flex: 0 0 auto;
+      padding: 14px 18px;
+      background: var(--ink);
+      color: white;
+      font: 13px "Russo One", sans-serif;
+      text-decoration: none;
+    }
+    .contact-link:hover { background: var(--primary); }
+    footer { padding: 23px 6.2%; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 11px; }
+    footer p { margin: 0; }
+
+    @media (max-width: 700px) {
+      .brand-logo { width: 160px; }
+      .page-intro { padding: 62px 7%; }
+      .catalog { padding: 58px 7% 72px; }
+      .catalog-heading { align-items: start; flex-direction: column; }
+      .samples { gap: 32px 16px; }
+      .next-step { padding: 45px 7%; align-items: start; flex-direction: column; }
+      footer { padding: 22px 7%; }
+    }
+
+    @media (max-width: 480px) {
+      .site-header { min-height: 66px; padding: 10px 5%; }
+      .brand-logo { width: 140px; }
+      .home-link { padding: 10px 11px; font-size: 11px; }
+      .page-intro { padding: 54px 6% 60px; }
+      .samples { grid-template-columns: 1fr; gap: 30px; }
+      .sample-image { aspect-ratio: 1.35; }
+      .sample h2 { font-size: 22px; }
+      footer { align-items: start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="Web app testing.html" aria-label="G Works - Doors and Windows home">
+      <img class="brand-logo" src="g-works-logo.svg" alt="">
+    </a>
+    <a class="home-link" href="Web app testing.html">Back to home</a>
+  </header>
+
+  <main>
+    <section class="page-intro" aria-labelledby="page-title">
+      <p class="eyebrow">G Works · Doors</p>
+      <h1 id="page-title">Make an entrance.</h1>
+      <p>Explore door styles that shape the way you arrive, move through your home, and open up to the outdoors.</p>
+    </section>
+
+    <section class="catalog" aria-labelledby="catalog-title">
+      <div class="catalog-heading">
+        <h2 id="catalog-title">A considered choice for every threshold.</h2>
+        <p>These examples are a starting point. The best choice depends on your space, preferences, and project requirements.</p>
+      </div>
+      <div class="samples">
+        <article class="sample">
+          <div class="sample-image">
+            <img src="https://images.pexels.com/photos/14171173/pexels-photo-14171173.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Wooden entry door set into a modern concrete facade" fetchpriority="high">
+          </div>
+          <div class="sample-info">
+            <div class="sample-meta"><h2>Casement door</h2><span class="sample-number">01 / HINGED</span></div>
+            <p>A side-hinged door swings open to create a direct passage. Choose a panel and finish that suits an entry, balcony, or garden opening.</p>
+          </div>
+        </article>
+        <article class="sample">
+          <div class="sample-image">
+            <img src="https://images.pexels.com/photos/7601178/pexels-photo-7601178.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="White-framed sliding patio doors opening to a veranda" loading="lazy">
+          </div>
+          <div class="sample-info">
+            <div class="sample-meta"><h2>Sliding Doors</h2><span class="sample-number">02 / SPACE-SAVING</span></div>
+            <p>Door panels glide along a track instead of swinging into the room, helping keep the area around the opening clear.</p>
+          </div>
+        </article>
+        <article class="sample">
+          <div class="sample-image">
+            <img src="https://images.pexels.com/photos/13600834/pexels-photo-13600834.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Black-framed multi-panel folding doors open to the patio" loading="lazy">
+          </div>
+          <div class="sample-info">
+            <div class="sample-meta"><h2>Folding Doors</h2><span class="sample-number">03 / WIDE OPENING</span></div>
+            <p>Linked panels fold and stack to one side to open up a broad passage between indoor and outdoor living spaces.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="next-step" aria-labelledby="next-step-title">
+      <h2 id="next-step-title">Have an entrance or opening in mind?</h2>
+      <a class="contact-link" href="order.html">Talk through your project <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer>
+    <p>G Works - Doors and Windows</p>
+    <p>Door styles shown as examples.</p>
+  </footer>
+</body>
+</html>
