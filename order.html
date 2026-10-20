@@ -86,7 +86,12 @@
       cursor: pointer;
     }
     .submit-button:hover { background: #46535b; }
+    .submit-button:disabled { opacity: .65; cursor: wait; }
     .form-note { max-width: 300px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .form-status { margin: 18px 0 0; font-size: 13px; line-height: 1.6; }
+    .form-status[data-state="pending"] { color: var(--muted); }
+    .form-status[data-state="success"] { color: #16734a; }
+    .form-status[data-state="error"] { color: #a33131; }
     footer { padding: 22px 6.2%; display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
     footer p { margin: 0; }
 
@@ -126,7 +131,7 @@
       <p class="eyebrow">G WORKS · ORDER REQUEST</p>
       <h1 id="order-title">Tell us what you need.</h1>
       <p class="intro-copy">Share a few details about your windows or doors. We’ll follow up to discuss measurements, options, and pricing.</p>
-      <p class="intro-note">This form prepares an email request for you to review and send. It does not place or pay for an order automatically.</p>
+      <p class="intro-note">Send us your project details and we’ll follow up. This request does not place or pay for an order automatically.</p>
     </section>
 
     <form class="order-form" id="order-form">
@@ -176,35 +181,80 @@
         </div>
       </div>
       <div class="submit-row">
-        <button class="submit-button" type="submit">Prepare order request <span aria-hidden="true">↗</span></button>
-        <p class="form-note">Your email app will open with the details filled in. Review and send the message to submit your request.</p>
+        <button class="submit-button" type="submit">Send order request <span aria-hidden="true">↗</span></button>
+        <p class="form-note">Your request will be saved securely for the G Works team to review.</p>
       </div>
+      <p class="form-status field-full" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </main>
 
   <footer>
     <p>G Works - Doors and Windows</p>
-    <p>Order requests are confirmed by email.</p>
+    <p>Order requests are reviewed by the G Works team.</p>
   </footer>
 
   <script>
-    document.querySelector("#order-form").addEventListener("submit", event => {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      const subject = `Order request: ${formData.get("product")}`;
-      const body = [
-        `Name: ${formData.get("name")}`,
-        `Email: ${formData.get("email")}`,
-        `Phone: ${formData.get("phone") || "Not provided"}`,
-        `Product: ${formData.get("product")}`,
-        `Style: ${formData.get("style")}`,
-        `Approximate quantity: ${formData.get("quantity") || "Not provided"}`,
-        "",
-        "Project notes:",
-        formData.get("notes") || "Not provided"
-      ].join("\n");
+    const supabaseUrl = "https://tjrzycdvbukcvqyyzrbe.supabase.co";
+    const supabasePublishableKey = "sb_publishable_YJYYGx0W2c4xa1mEkpGnEA_vmD5oCb8";
+    const orderForm = document.querySelector("#order-form");
+    const formStatus = document.querySelector("#form-status");
+    const submitButton = orderForm.querySelector('button[type="submit"]');
 
-      window.location.href = `mailto:hello@gworks.example?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    orderForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!orderForm.reportValidity()) return;
+
+      if (supabasePublishableKey === "YOUR_SUPABASE_PUBLISHABLE_KEY") {
+        formStatus.textContent = "Supabase setup is not finished yet. Add your project's publishable key to this page before submitting.";
+        formStatus.dataset.state = "error";
+        return;
+      }
+
+      const formData = new FormData(orderForm);
+      const quantityValue = formData.get("quantity");
+      const request = {
+        customer_name: formData.get("name").trim(),
+        customer_email: formData.get("email").trim(),
+        phone: formData.get("phone").trim() || null,
+        product: formData.get("product"),
+        style: formData.get("style"),
+        quantity: quantityValue ? Number(quantityValue) : null,
+        notes: formData.get("notes").trim() || null
+      };
+
+      submitButton.disabled = true;
+      formStatus.textContent = "Sending your request…";
+      formStatus.dataset.state = "pending";
+
+      try {
+        const response = await fetch(`${supabaseUrl}/rest/v1/order_requests`, {
+          method: "POST",
+          headers: {
+            apikey: supabasePublishableKey,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal"
+          },
+          body: JSON.stringify(request)
+        });
+
+        if (!response.ok) {
+          const details = await response.text();
+          console.error("Supabase order submission failed:", response.status, details);
+          throw new Error(`Order request could not be saved (HTTP ${response.status}).`);
+        }
+
+        orderForm.reset();
+        formStatus.textContent = "Thank you — your request was sent to G Works.";
+        formStatus.dataset.state = "success";
+      } catch (error) {
+        console.error("Order request submission failed:", error);
+        formStatus.textContent = error instanceof Error
+          ? `${error.message} Please try again later.`
+          : "Your request could not be sent. Please try again later.";
+        formStatus.dataset.state = "error";
+      } finally {
+        submitButton.disabled = false;
+      }
     });
   </script>
 </body>
