@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5c6870">
+  <meta name="description" content="Private G Works order request dashboard.">
+  <title>Order Dashboard | G Works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #26343b;
+      --muted: #5c6870;
+      --paper: #f4f6f7;
+      --primary: #5c6870;
+      --accent: #14a2dc;
+      --line: #d7e0e4;
+      font-family: Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .site-header {
+      min-height: 82px;
+      padding: 12px 6.2%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--paper);
+    }
+    .brand-logo { display: block; width: 205px; height: auto; }
+    .back-link { color: var(--primary); font: 12px "Russo One", sans-serif; text-underline-offset: 4px; }
+    main { width: min(1120px, calc(100% - 48px)); margin: 54px auto 80px; }
+    .eyebrow { margin: 0 0 14px; color: #087dac; font-size: 11px; font-weight: 800; letter-spacing: 1.8px; }
+    h1, h2 { font-family: "Russo One", sans-serif; font-weight: 400; }
+    h1 { margin: 0 0 12px; font-size: clamp(36px, 5vw, 56px); line-height: 1.05; }
+    .intro { color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .panel { margin-top: 32px; padding: clamp(20px, 4vw, 32px); border: 1px solid var(--line); background: #fff; }
+    .panel h2 { margin: 0 0 20px; font-size: 21px; }
+    .login-form { width: min(100%, 460px); display: grid; gap: 16px; }
+    .field { display: grid; gap: 7px; }
+    label { font-size: 12px; font-weight: 700; }
+    input {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #bdc9cf;
+      border-radius: 0;
+      background: #fbfcfc;
+      color: var(--ink);
+      font: 14px Arial, sans-serif;
+    }
+    button {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+      font: 12px "Russo One", sans-serif;
+      cursor: pointer;
+    }
+    button:hover { background: #46535b; }
+    button:disabled { opacity: .65; cursor: wait; }
+    .message { min-height: 1.5em; margin: 0; font-size: 13px; line-height: 1.5; }
+    .message[data-state="error"] { color: #a33131; }
+    .message[data-state="success"] { color: #16734a; }
+    .dashboard-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .dashboard-heading h2 { margin: 0; }
+    .table-wrap { margin-top: 22px; overflow-x: auto; border: 1px solid var(--line); }
+    table { width: 100%; min-width: 950px; border-collapse: collapse; background: #fff; }
+    th, td { padding: 13px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 12px; line-height: 1.5; }
+    th { position: sticky; top: 0; background: #eef2f4; color: var(--primary); font-size: 11px; }
+    td.notes { min-width: 190px; white-space: pre-wrap; }
+    .empty { padding: 22px 0; color: var(--muted); text-align: center; }
+    footer { padding: 22px 6.2%; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    footer p { margin: 0; }
+    @media (max-width: 600px) {
+      .site-header { min-height: 70px; padding: 10px 5%; }
+      .brand-logo { width: 155px; }
+      main { width: calc(100% - 32px); margin: 36px auto 56px; }
+      .dashboard-heading { align-items: start; flex-direction: column; }
+      footer { padding: 20px 5%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="Web app testing.html" aria-label="G Works - Doors and Windows home">
+      <img class="brand-logo" src="g-works-logo.svg" alt="G Works">
+    </a>
+    <a class="back-link" href="Web app testing.html">Back to site</a>
+  </header>
+
+  <main>
+    <p class="eyebrow">G WORKS · PRIVATE ADMIN</p>
+    <h1>Order requests.</h1>
+    <p class="intro">Sign in with the authorized Supabase account to view customer requests. This page does not make order data public.</p>
+
+    <section class="panel" id="login-panel" aria-labelledby="login-heading">
+      <h2 id="login-heading">Admin sign in</h2>
+      <form class="login-form" id="login-form">
+        <div class="field">
+          <label for="admin-email">Admin email</label>
+          <input id="admin-email" name="email" type="email" autocomplete="username" value="vincemmbs@gmail.com" required>
+        </div>
+        <div class="field">
+          <label for="admin-password">Password</label>
+          <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit">Sign in and view requests</button>
+        <p class="message" id="login-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel" id="dashboard-panel" aria-labelledby="dashboard-heading" hidden>
+      <div class="dashboard-heading">
+        <h2 id="dashboard-heading">Submitted requests</h2>
+        <button id="sign-out" type="button">Sign out</button>
+      </div>
+      <p class="message" id="dashboard-message" role="status" aria-live="polite"></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Received</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Product</th>
+              <th scope="col">Style</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody id="order-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer><p>G Works - Doors and Windows · Private order dashboard</p></footer>
+
+  <script>
+    const supabaseUrl = "https://tjrzycdvbukcvqyyzrbe.supabase.co";
+    const supabasePublishableKey = "sb_publishable_YJYYGx0W2c4xa1mEkpGnEA_vmD5oCb8";
+    const adminEmail = "vincemmbs@gmail.com";
+    const loginForm = document.querySelector("#login-form");
+    const loginPanel = document.querySelector("#login-panel");
+    const dashboardPanel = document.querySelector("#dashboard-panel");
+    const loginMessage = document.querySelector("#login-message");
+    const dashboardMessage = document.querySelector("#dashboard-message");
+    const orderRows = document.querySelector("#order-rows");
+    const signInButton = loginForm.querySelector('button[type="submit"]');
+    let accessToken = null;
+
+    function setMessage(element, text, state = "") {
+      element.textContent = text;
+      element.dataset.state = state;
+    }
+
+    function addCell(row, value, className = "") {
+      const cell = document.createElement("td");
+      cell.textContent = value ?? "—";
+      if (className) cell.className = className;
+      row.append(cell);
+    }
+
+    async function loadOrders() {
+      setMessage(dashboardMessage, "Loading requests…");
+      orderRows.replaceChildren();
+      const query = new URLSearchParams({
+        select: "id,created_at,customer_name,customer_email,phone,product,style,quantity,notes",
+        order: "created_at.desc"
+      });
+
+      const response = await fetch(`${supabaseUrl}/rest/v1/order_requests?${query}`, {
+        headers: {
+          apikey: supabasePublishableKey,
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        const details = await response.text();
+        console.error("Supabase order dashboard request failed:", response.status, details);
+        throw new Error(`Could not load orders (HTTP ${response.status}). Re-run supabase/schema.sql and confirm this account is authorized.`);
+      }
+
+      const orders = await response.json();
+      for (const order of orders) {
+        const row = document.createElement("tr");
+        const received = new Date(order.created_at);
+        addCell(row, Number.isNaN(received.getTime()) ? "Unknown" : received.toLocaleString());
+        addCell(row, order.customer_name);
+        addCell(row, order.customer_email);
+        addCell(row, order.phone);
+        addCell(row, order.product);
+        addCell(row, order.style);
+        addCell(row, order.quantity);
+        addCell(row, order.notes, "notes");
+        orderRows.append(row);
+      }
+
+      setMessage(dashboardMessage, orders.length ? `${orders.length} request${orders.length === 1 ? "" : "s"}` : "No order requests yet.", orders.length ? "success" : "");
+    }
+
+    loginForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!loginForm.reportValidity()) return;
+
+      const formData = new FormData(loginForm);
+      const email = String(formData.get("email")).trim().toLowerCase();
+      if (email !== adminEmail) {
+        setMessage(loginMessage, "This account is not authorized to view order requests.", "error");
+        return;
+      }
+
+      signInButton.disabled = true;
+      setMessage(loginMessage, "Signing in…");
+      try {
+        const response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+          method: "POST",
+          headers: {
+            apikey: supabasePublishableKey,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password: formData.get("password")
+          })
+        });
+
+        if (!response.ok) {
+          const details = await response.json().catch(() => ({}));
+          throw new Error(details.msg || details.message || "Sign-in failed. Check your email and password.");
+        }
+
+        const session = await response.json();
+        if (String(session.user?.email || "").toLowerCase() !== adminEmail) {
+          throw new Error("The signed-in account is not authorized to view order requests.");
+        }
+
+        accessToken = session.access_token;
+        loginPanel.hidden = true;
+        dashboardPanel.hidden = false;
+        loginForm.reset();
+        document.querySelector("#admin-email").value = adminEmail;
+        await loadOrders();
+      } catch (error) {
+        accessToken = null;
+        loginPanel.hidden = false;
+        dashboardPanel.hidden = true;
+        setMessage(loginMessage, error instanceof Error ? error.message : "Sign-in failed. Please try again.", "error");
+      } finally {
+        signInButton.disabled = false;
+      }
+    });
+
+    document.querySelector("#sign-out").addEventListener("click", () => {
+      accessToken = null;
+      orderRows.replaceChildren();
+      dashboardPanel.hidden = true;
+      loginPanel.hidden = false;
+      setMessage(loginMessage, "You have signed out.", "success");
+    });
+  </script>
+</body>
+</html>
