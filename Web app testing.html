@@ -6,6 +6,17 @@
   <meta name="theme-color" content="#5c6870">
   <meta name="description" content="Beautifully considered windows and doors, measured and installed for the way you live.">
   <title>G Works - Doors and Windows</title>
+  <script>
+    let savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem("gworks-theme");
+    } catch (error) {
+      console.warn("Theme preference storage is unavailable; using light mode.", error);
+    }
+    if (savedTheme === "dark") {
+      document.documentElement.dataset.theme = "dark";
+    }
+  </script>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://images.pexels.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,9 +30,23 @@
       --paper: #f4f6f7;
       --primary: #5c6870;
       --accent: #14a2dc;
-      --accent-light: #a9def1;
+      --accent-light: #d0f0f8;
       --accent-soft: #dff2f8;
       --line: #d7e0e4;
+      --section-bg: #eaf0f3;
+      --link: #006b96;
+      --link-hover: #005f83;
+      --quiet-ink: #5c6870;
+      --contact-bg: #14a2dc;
+      --contact-ink: #1b2b33;
+      --button-hover: #46535b;
+      --light-button-bg: #fff;
+      --light-button-ink: #26343b;
+      --light-button-border: #fff;
+      --image-placeholder: #cbd8de;
+      --dialog-shadow: 0 24px 90px rgba(14, 28, 36, .3);
+      --dialog-backdrop: rgba(20, 32, 39, .68);
+      --rule-on-dark: rgba(255, 255, 255, .32);
       --font-display: "Russo One", sans-serif;
       --font-body: Arial, sans-serif;
       font-family: var(--font-body);
@@ -30,8 +55,36 @@
       scroll-behavior: smooth;
     }
 
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #e8eff2;
+      --muted: #a9bac2;
+      --paper: #111b21;
+      --primary: #526a77;
+      --accent-soft: #203d4a;
+      --line: #344750;
+      --section-bg: #1a2931;
+      --link: #65c9ee;
+      --link-hover: #8bdfff;
+      --quiet-ink: #dce8ec;
+      --contact-bg: #12627c;
+      --contact-ink: #effaff;
+      --button-hover: #344b57;
+      --light-button-bg: #20343e;
+      --light-button-ink: #effaff;
+      --light-button-border: #718994;
+      --image-placeholder: #263a44;
+      --dialog-shadow: 0 24px 90px rgba(0, 0, 0, .58);
+      --dialog-backdrop: rgba(2, 9, 13, .78);
+      --rule-on-dark: rgba(255, 255, 255, .28);
+    }
+
     * { box-sizing: border-box; }
     body { margin: 0; min-width: 320px; }
+    body, .site-header, .hero, .intro, .products, .promise, .contact, footer, .offer-dialog, .offer-panel, .nav-admin, .nav-links a, .nav-cta, .button, .theme-toggle, .text-link, .product-meta span, h1, h2, h3, p, .step-number, .offer-dismiss {
+      transition: background-color 280ms ease, color 280ms ease, border-color 280ms ease;
+    }
+    body { background: var(--paper); }
     a { color: inherit; }
     img { display: block; width: 100%; }
     button, a { -webkit-tap-highlight-color: transparent; }
@@ -55,17 +108,18 @@
       font-family: var(--font-display);
     }
 
-    .brand-logo { display: block; width: 205px; height: auto; }
+    .brand-logo { display: block; width: 205px; height: auto; transition: filter 280ms ease; }
+    :root[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
 
     .nav-links { display: flex; align-items: center; gap: 34px; }
     .nav-links a {
       text-decoration: none;
-      color: var(--primary);
+      color: var(--quiet-ink);
       font-size: 13px;
       font-weight: 700;
       font-family: var(--font-display);
     }
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover { color: var(--link-hover); }
 
     .nav-cta, .button {
       min-height: 46px;
@@ -83,7 +137,42 @@
       font-family: var(--font-display);
       transition: background 160ms ease, color 160ms ease, transform 160ms ease;
     }
-    .nav-cta:hover, .button:hover { background: #46535b; transform: translateY(-1px); }
+    .nav-cta:hover, .button:hover { background: var(--button-hover); transform: translateY(-1px); }
+    .nav-admin {
+      min-height: 42px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--accent);
+      color: var(--link);
+      text-decoration: none;
+      font: 11px var(--font-display);
+      white-space: nowrap;
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .nav-admin-mobile { display: none; }
+    .nav-cta-mobile { display: none; }
+    .nav-admin:hover { background: var(--accent-soft); color: var(--ink); }
+    .theme-toggle {
+      min-height: 38px;
+      padding: 0 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--quiet-ink);
+      font: 10px var(--font-display);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 280ms ease, color 280ms ease, border-color 280ms ease, transform 160ms ease;
+    }
+    .theme-toggle:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+    .theme-icon { color: var(--link); font: 16px var(--font-body); line-height: 1; }
+    .theme-toggle-mobile { display: none; }
+    .intro-eyebrow { color: var(--link); }
 
     .hero {
       min-height: min(730px, calc(100svh - 82px));
@@ -119,8 +208,8 @@
     h1 { max-width: 730px; margin-bottom: 20px; font-size: clamp(50px, 7.2vw, 92px); line-height: .98; }
     .hero-copy { max-width: 440px; margin-bottom: 31px; color: rgba(255,255,255,.84); font-size: 16px; line-height: 1.7; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-    .button-light { border-color: #fff; background: #fff; color: var(--ink); }
-    .button-light:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+    .button-light { border-color: var(--light-button-border); background: var(--light-button-bg); color: var(--light-button-ink); }
+    .button-light:hover { background: var(--accent); border-color: var(--accent); color: #102a35; }
     .hero-controls {
       position: absolute;
       right: 6.2%;
@@ -162,26 +251,26 @@
     .intro h2 { max-width: 570px; margin: 0; font-size: clamp(38px, 5vw, 64px); line-height: 1.06; }
     .intro-copy { max-width: 460px; padding-bottom: 5px; }
     .intro-copy p { margin-bottom: 22px; color: var(--muted); font-size: 15px; line-height: 1.85; }
-    .text-link { display: inline-flex; align-items: center; gap: 10px; color: #087dac; font-size: 13px; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+    .text-link { display: inline-flex; align-items: center; gap: 10px; color: var(--link); font-size: 13px; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 
-    .products { padding: 79px 6.2% 105px; background: #eaf0f3; }
+    .products { padding: 79px 6.2% 105px; background: var(--section-bg); }
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin: 0 4.3% 35px; }
-    .section-head .eyebrow { margin-bottom: 13px; color: #087dac; }
+    .section-head .eyebrow { margin-bottom: 13px; color: var(--link); }
     .section-head h2 { margin: 0; font-size: clamp(36px, 4.5vw, 58px); line-height: 1; }
     .section-head > p { max-width: 300px; margin: 0 0 4px; color: var(--muted); font-size: 14px; line-height: 1.7; }
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
     .product { min-width: 0; }
     .product-image-link { display: block; }
-    .product-image-wrap { aspect-ratio: 1.13; overflow: hidden; background: #cbd8de; }
+    .product-image-wrap { aspect-ratio: 1.13; overflow: hidden; background: var(--image-placeholder); }
     .product img { height: 100%; object-fit: cover; transition: transform 500ms cubic-bezier(.2,.7,.2,1); }
     .product:hover img { transform: scale(1.035); }
     .product-meta { padding: 18px 2px 0; display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
     .product h3 { margin: 0; font-size: 25px; }
-    .product-meta span { color: #087dac; font-size: 12px; font-weight: 800; }
+    .product-meta span { color: var(--link); font-size: 12px; font-weight: 800; }
     .product p { max-width: 330px; margin: 9px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
-    .product-hint { margin-top: 16px; display: inline-flex; align-items: center; gap: 9px; color: var(--primary); font: 12px var(--font-display); text-decoration: none; }
+    .product-hint { margin-top: 16px; display: inline-flex; align-items: center; gap: 9px; color: var(--quiet-ink); font: 12px var(--font-display); text-decoration: none; }
     .product-hint::before { width: 18px; height: 2px; background: var(--accent); content: ""; transition: width 180ms ease; }
-    .product-hint span { color: #087dac; transition: transform 180ms ease; }
+    .product-hint span { color: var(--link); transition: transform 180ms ease; }
     .product-hint:hover { color: var(--ink); }
     .product-hint:hover::before { width: 27px; }
     .product-hint:hover span { transform: translate(2px, -2px); }
@@ -196,11 +285,11 @@
     }
     .promise .eyebrow { color: var(--accent-light); }
     .promise h2 { max-width: 440px; margin: 0; font-size: clamp(40px, 5vw, 62px); line-height: 1.05; }
-    .steps { border-top: 1px solid rgba(255,255,255,.32); }
-    .step { padding: 21px 0; display: grid; grid-template-columns: 43px 1fr; gap: 13px; border-bottom: 1px solid rgba(255,255,255,.32); }
+    .steps { border-top: 1px solid var(--rule-on-dark); }
+    .step { padding: 21px 0; display: grid; grid-template-columns: 43px 1fr; gap: 13px; border-bottom: 1px solid var(--rule-on-dark); }
     .step-number { padding-top: 4px; color: var(--accent-light); font-size: 11px; font-weight: 800; letter-spacing: 1px; }
     .step h3 { margin: 0 0 6px; font-size: 23px; }
-    .step p { max-width: 390px; margin: 0; color: rgba(255,255,255,.73); font-size: 13px; line-height: 1.7; }
+    .step p { max-width: 390px; margin: 0; color: rgba(255,255,255,.9); font-size: 13px; line-height: 1.7; }
 
     .contact {
       padding: 100px 10.5%;
@@ -208,12 +297,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 35px;
-      background: var(--accent);
+      background: var(--contact-bg);
+      color: var(--contact-ink);
     }
-    .contact .eyebrow { margin-bottom: 14px; color: #164e65; }
+    .contact .eyebrow { margin-bottom: 14px; color: var(--contact-ink); }
     .contact h2 { max-width: 620px; margin: 0; font-size: clamp(43px, 6vw, 74px); line-height: .98; }
     .contact .button { flex: 0 0 auto; border-color: var(--ink); background: var(--ink); }
-    .contact .button:hover { background: #46535b; }
+    .contact .button:hover { background: var(--button-hover); }
+    :root[data-theme="dark"] .contact .button { border-color: #10242d; background: #10242d; color: #fff; }
     footer { padding: 24px 6.2%; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 11px; }
     footer p { margin: 0; }
 
@@ -225,9 +316,9 @@
       border: 1px solid var(--line);
       background: var(--paper);
       color: var(--ink);
-      box-shadow: 0 24px 90px rgba(14, 28, 36, .3);
+      box-shadow: var(--dialog-shadow);
     }
-    .offer-dialog::backdrop { background: rgba(20, 32, 39, .68); backdrop-filter: blur(3px); }
+    .offer-dialog::backdrop { background: var(--dialog-backdrop); backdrop-filter: blur(3px); }
     .offer-panel { position: relative; padding: 36px 36px 30px; border-top: 5px solid var(--accent); }
     .offer-close {
       position: absolute;
@@ -237,29 +328,33 @@
       height: 36px;
       border: 0;
       background: transparent;
-      color: var(--primary);
+      color: var(--ink);
       font: 27px var(--font-body);
       cursor: pointer;
     }
-    .offer-close:hover { color: var(--accent); }
-    .offer-eyebrow { margin: 0 42px 15px 0; color: #087dac; font-size: 10px; font-weight: 800; letter-spacing: 1.6px; }
+    .offer-close:hover { color: var(--link-hover); }
+    .offer-eyebrow { margin: 0 42px 15px 0; color: var(--link); font-size: 10px; font-weight: 800; letter-spacing: 1.6px; }
     .offer-dialog h2 { margin: 0 32px 13px 0; font-size: clamp(27px, 5vw, 36px); line-height: 1.12; }
     .offer-copy { margin: 0 0 24px; color: var(--muted); font-size: 14px; line-height: 1.75; }
     .offer-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; }
     .offer-action { min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: white; font: 12px var(--font-display); text-decoration: none; }
-    .offer-action:hover { background: #46535b; }
-    .offer-dismiss { padding: 10px 0; border: 0; background: transparent; color: var(--primary); font: 12px var(--font-body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-    .offer-dismiss:hover { color: #087dac; }
+    .offer-action:hover { background: var(--button-hover); }
+    .offer-dismiss { padding: 10px 0; border: 0; background: transparent; color: var(--ink); font: 12px var(--font-body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .offer-dismiss:hover { color: var(--link-hover); }
 
     @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes arrive { from { transform: scale(1.035); } to { transform: scale(1); } }
 
     @media (max-width: 760px) {
       .site-header { height: 72px; padding: 0 5%; gap: 15px; }
-      .brand-logo { width: 170px; }
+      .brand-logo { width: clamp(96px, 17vw, 140px); }
       .nav-links { gap: 18px; }
       .nav-links a { font-size: 12px; }
-      .nav-cta { min-height: 40px; padding: 0 12px; font-size: 12px; }
+      .nav-admin { min-height: 38px; padding: 0 9px; font-size: 9px; }
+      .nav-admin-desktop, .theme-toggle-desktop, .nav-cta-desktop { display: none; }
+      .nav-admin-mobile, .nav-cta-mobile { display: inline; }
+      .theme-toggle { width: 36px; min-height: 36px; padding: 0; }
+      .nav-cta { min-height: 38px; padding: 0 9px; gap: 6px; font-size: 10px; }
       .hero { min-height: 670px; min-height: min(760px, calc(100svh - 72px)); }
       .hero-image { object-position: 58% center; }
       .hero-shade { background: linear-gradient(90deg, rgba(28,39,45,.8), rgba(28,39,45,.25)); }
@@ -279,12 +374,25 @@
       footer { padding: 22px 6%; }
     }
 
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .site-header { gap: clamp(8px, 2vw, 16px); }
+      .brand-logo { width: clamp(118px, 18vw, 160px); }
+      .nav-admin { min-height: 38px; padding: 0 9px; font-size: 9px; }
+      .nav-admin-desktop, .theme-toggle-desktop, .nav-cta-desktop { display: none; }
+      .nav-admin-mobile, .nav-cta-mobile { display: inline; }
+      .theme-toggle { width: 36px; min-height: 36px; padding: 0; }
+      .nav-cta { min-height: 38px; padding: 0 9px; gap: 6px; font-size: 10px; }
+    }
+
     @media (max-width: 480px) {
       .site-header { height: 66px; }
-      .brand-logo { width: 124px; }
-      .nav-links { gap: 12px; }
-      .nav-links a:nth-child(1), .nav-links a:nth-child(2) { display: none; }
-      .nav-cta { min-height: 38px; padding: 0 10px; font-size: 11px; }
+      .site-header { gap: 6px; padding-right: 4%; padding-left: 4%; }
+      .brand-logo { width: 80px; }
+      .nav-links { display: none; }
+      .theme-toggle { width: 32px; min-height: 34px; padding: 0; }
+      .nav-admin { min-height: 36px; padding: 0 7px; font-size: 9px; }
+      .nav-cta { min-height: 36px; padding: 0 7px; gap: 5px; font-size: 9px; }
       .hero { min-height: 650px; min-height: calc(100svh - 66px); }
       .hero-content { width: 100%; padding: 0 6% 76px; }
       h1 { max-width: 440px; font-size: clamp(49px, 14vw, 68px); }
@@ -312,7 +420,13 @@
       <a href="#doors">Doors</a>
       <a href="#approach">Our approach</a>
     </nav>
-    <a class="nav-cta" href="order.html">Plan a project <span aria-hidden="true">→</span></a>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <span class="theme-icon" id="theme-icon" aria-hidden="true">◐</span>
+      <span class="theme-toggle-desktop" id="theme-label">Dark mode</span>
+      <span class="theme-toggle-mobile">Theme</span>
+    </button>
+    <a class="nav-admin" href="./orders.html" aria-label="Open the private order dashboard sign-in"><span class="nav-admin-desktop">Orders login</span><span class="nav-admin-mobile">Admin login</span></a>
+    <a class="nav-cta" href="./order.html" aria-label="Start a project order request"><span class="nav-cta-desktop">Plan a project</span><span class="nav-cta-mobile">Plan project</span><span aria-hidden="true">→</span></a>
   </header>
 
   <main id="top">
@@ -329,7 +443,7 @@
         <p class="hero-copy">Thoughtfully chosen windows and doors, measured for your home and fitted with care.</p>
         <div class="hero-actions">
           <a class="button button-light" href="#windows">Explore the collection <span aria-hidden="true">↓</span></a>
-          <a class="button" href="order.html">Talk through your project <span aria-hidden="true">→</span></a>
+          <a class="button" href="./order.html">Talk through your project <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="hero-controls" role="group" aria-label="Hero slideshow controls">
@@ -342,7 +456,7 @@
 
     <section class="intro" aria-labelledby="intro-title">
       <div>
-        <p class="eyebrow" style="color: #087dac">The G Works difference</p>
+        <p class="eyebrow intro-eyebrow">The G Works difference</p>
         <h2 id="intro-title">More light. Better flow. A home that feels like yours.</h2>
       </div>
       <div class="intro-copy">
@@ -361,24 +475,24 @@
       </div>
       <div class="product-grid">
         <article class="product" id="windows">
-          <a class="product-image-link" href="windows.html" aria-label="See more window styles">
+          <a class="product-image-link" href="./windows.html" aria-label="See more window styles">
             <div class="product-image-wrap">
               <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=80" alt="Contemporary living space with generous windows and warm natural finishes" loading="lazy">
             </div>
           </a>
           <div class="product-meta"><h3>Windows</h3><span>01 / DAYLIGHT</span></div>
           <p>Thoughtful proportions that bring the outdoors into everyday life.</p>
-          <a class="product-hint" href="windows.html">Click image to see more windows <span aria-hidden="true">→</span></a>
+          <a class="product-hint" href="./windows.html">Click image to see more windows <span aria-hidden="true">→</span></a>
         </article>
         <article class="product" id="doors">
-          <a class="product-image-link" href="doors.html" aria-label="See more door styles">
+          <a class="product-image-link" href="./doors.html" aria-label="See more door styles">
             <div class="product-image-wrap">
               <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=80" alt="Modern home interior connected to an outdoor terrace through glass doors" loading="lazy">
             </div>
           </a>
           <div class="product-meta"><h3>Entry doors</h3><span>02 / ARRIVAL</span></div>
           <p>A considered first impression, with a solid feel and a clear point of view.</p>
-          <a class="product-hint" href="doors.html">Click image to see more doors <span aria-hidden="true">→</span></a>
+          <a class="product-hint" href="./doors.html">Click image to see more doors <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -409,7 +523,7 @@
         <p class="eyebrow">Your next view starts here</p>
         <h2 id="contact-title">Let's make room for more light.</h2>
       </div>
-      <a class="button" href="order.html">Start an order request <span aria-hidden="true">→</span></a>
+      <a class="button" href="./order.html">Start an order request <span aria-hidden="true">→</span></a>
     </section>
   </main>
 
@@ -426,7 +540,7 @@
       <h2 id="offer-title">Ready for a brighter home?</h2>
       <p class="offer-copy" id="offer-copy">Tell us about your project and we’ll help you explore window and door options that fit your home.</p>
       <div class="offer-actions">
-        <a class="offer-action" href="order.html">Plan a project <span aria-hidden="true">→</span></a>
+        <a class="offer-action" href="./order.html">Plan a project <span aria-hidden="true">→</span></a>
         <button class="offer-dismiss" type="button" data-close-offer>Maybe later</button>
       </div>
     </div>
@@ -434,6 +548,31 @@
 
   <script>
     document.querySelector("#year").textContent = new Date().getFullYear();
+
+    const themeToggle = document.querySelector("#theme-toggle");
+    const themeIcon = document.querySelector("#theme-icon");
+    const themeLabel = document.querySelector("#theme-label");
+
+    function updateThemeToggle() {
+      const isDark = document.documentElement.dataset.theme === "dark";
+      themeToggle.setAttribute("aria-pressed", String(isDark));
+      themeToggle.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
+      themeIcon.textContent = isDark ? "☀" : "◐";
+      themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+      document.querySelector('meta[name="theme-color"]').content = isDark ? "#111b21" : "#f4f6f7";
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
+      try {
+        localStorage.setItem("gworks-theme", nextTheme);
+      } catch (error) {
+        console.warn("Theme preference could not be saved; it will reset on reload.", error);
+      }
+      updateThemeToggle();
+    });
+    updateThemeToggle();
 
     const heroSlides = [...document.querySelectorAll(".hero-image")];
     const heroCounter = document.querySelector("#hero-counter");
