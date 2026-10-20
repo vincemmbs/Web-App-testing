@@ -12,12 +12,14 @@
   <style>
     :root {
       color-scheme: light;
-      --ink: #26343b;
-      --muted: #5c6870;
-      --paper: #f4f6f7;
-      --primary: #5c6870;
+      --ink: #172a36;
+      --muted: #70808a;
+      --paper: #f3f6f7;
+      --primary: #203746;
       --accent: #14a2dc;
-      --line: #d7e0e4;
+      --line: #dce4e8;
+      --surface: #fff;
+      --display: "Russo One", sans-serif;
       font-family: Arial, sans-serif;
       color: var(--ink);
       background: var(--paper);
@@ -26,67 +28,128 @@
     body { min-width: 320px; min-height: 100vh; margin: 0; }
     a { color: inherit; }
     :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    [hidden] { display: none !important; }
     .site-header {
-      min-height: 82px;
-      padding: 12px 6.2%;
+      min-height: 78px;
+      padding: 12px max(5%, calc((100% - 1240px) / 2));
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      background: var(--paper);
+      background: #fff;
+      border-bottom: 1px solid var(--line);
     }
-    .brand-logo { display: block; width: 205px; height: auto; }
-    .back-link { color: var(--primary); font: 12px "Russo One", sans-serif; text-underline-offset: 4px; }
-    main { width: min(1120px, calc(100% - 48px)); margin: 54px auto 80px; }
-    .eyebrow { margin: 0 0 14px; color: #087dac; font-size: 11px; font-weight: 800; letter-spacing: 1.8px; }
-    h1, h2 { font-family: "Russo One", sans-serif; font-weight: 400; }
-    h1 { margin: 0 0 12px; font-size: clamp(36px, 5vw, 56px); line-height: 1.05; }
-    .intro { color: var(--muted); font-size: 14px; line-height: 1.7; }
-    .panel { margin-top: 32px; padding: clamp(20px, 4vw, 32px); border: 1px solid var(--line); background: #fff; }
-    .panel h2 { margin: 0 0 20px; font-size: 21px; }
-    .login-form { width: min(100%, 460px); display: grid; gap: 16px; }
-    .field { display: grid; gap: 7px; }
-    label { font-size: 12px; font-weight: 700; }
+    .brand-logo { display: block; width: 190px; height: auto; }
+    .header-actions { display: flex; align-items: center; gap: 22px; }
+    .back-link { color: var(--muted); font: 11px var(--display); text-decoration: none; }
+    .back-link:hover { color: var(--accent); }
+    .secure-label { display: inline-flex; align-items: center; gap: 8px; color: #4f6d5e; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+    .secure-label::before { width: 7px; height: 7px; border-radius: 50%; background: #4eaa78; content: ""; }
+    main { width: min(1240px, calc(100% - 64px)); margin: 54px auto 88px; }
+    .page-intro { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 34px; }
+    .eyebrow { margin: 0 0 12px; color: #087dac; font-size: 10px; font-weight: 800; letter-spacing: .2em; }
+    h1, h2 { font-family: var(--display); font-weight: 400; }
+    h1 { margin: 0 0 11px; font-size: clamp(36px, 5vw, 56px); line-height: 1.04; letter-spacing: -.035em; }
+    .intro { max-width: 590px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+    .admin-badge { flex: 0 0 auto; padding: 10px 13px; border: 1px solid #c9e7f2; background: #eaf7fb; color: #087dac; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+    .panel { border: 1px solid var(--line); background: var(--surface); box-shadow: 0 18px 55px rgba(28, 54, 68, .055); }
+    .login-panel { display: grid; grid-template-columns: minmax(270px, .85fr) 1.15fr; overflow: hidden; }
+    .login-aside { min-height: 410px; padding: clamp(30px, 5vw, 58px); display: flex; flex-direction: column; justify-content: space-between; background: var(--primary); color: #fff; }
+    .login-aside .eyebrow { color: #8ddaf5; }
+    .login-aside h2 { max-width: 340px; margin: 0 0 18px; font-size: clamp(30px, 4vw, 44px); line-height: 1.12; }
+    .login-aside-copy { max-width: 350px; margin: 0; color: rgba(255,255,255,.72); font-size: 13px; line-height: 1.8; }
+    .login-aside-mark { width: 46px; height: 3px; margin-top: 34px; background: var(--accent); }
+    .login-form-side { padding: clamp(30px, 5vw, 60px); display: flex; flex-direction: column; justify-content: center; }
+    .panel-kicker { margin: 0 0 9px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .panel-title { margin: 0 0 9px; font-size: 24px; }
+    .panel-copy { margin: 0 0 26px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .login-form { width: min(100%, 430px); display: grid; gap: 17px; }
+    .field { display: grid; gap: 8px; }
+    label { color: #344751; font-size: 11px; font-weight: 700; }
     input {
       width: 100%;
-      min-height: 46px;
-      padding: 10px 12px;
-      border: 1px solid #bdc9cf;
-      border-radius: 0;
-      background: #fbfcfc;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #d3dfe4;
+      border-radius: 2px;
+      background: #fbfcfd;
       color: var(--ink);
       font: 14px Arial, sans-serif;
     }
+    input:focus { border-color: var(--accent); outline: 0; box-shadow: 0 0 0 3px rgba(20, 162, 220, .12); }
     button {
-      min-height: 44px;
-      padding: 0 18px;
+      min-height: 48px;
+      padding: 0 20px;
       border: 0;
-      background: var(--primary);
+      background: var(--accent);
       color: #fff;
-      font: 12px "Russo One", sans-serif;
+      font: 12px var(--display);
       cursor: pointer;
+      transition: background 160ms ease, transform 160ms ease;
     }
-    button:hover { background: #46535b; }
+    button:hover { background: #0787bb; transform: translateY(-1px); }
     button:disabled { opacity: .65; cursor: wait; }
     .message { min-height: 1.5em; margin: 0; font-size: 13px; line-height: 1.5; }
     .message[data-state="error"] { color: #a33131; }
     .message[data-state="success"] { color: #16734a; }
-    .dashboard-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .dashboard-heading h2 { margin: 0; }
-    .table-wrap { margin-top: 22px; overflow-x: auto; border: 1px solid var(--line); }
-    table { width: 100%; min-width: 950px; border-collapse: collapse; background: #fff; }
-    th, td { padding: 13px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 12px; line-height: 1.5; }
-    th { position: sticky; top: 0; background: #eef2f4; color: var(--primary); font-size: 11px; }
-    td.notes { min-width: 190px; white-space: pre-wrap; }
-    .empty { padding: 22px 0; color: var(--muted); text-align: center; }
-    footer { padding: 22px 6.2%; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .dashboard-panel { overflow: hidden; }
+    .dashboard-top { padding: 27px 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); }
+    .dashboard-heading { display: flex; align-items: center; gap: 14px; }
+    .heading-icon { width: 42px; height: 42px; display: grid; place-items: center; background: #e9f7fc; color: #0787bb; font-size: 20px; }
+    .dashboard-heading h2 { margin: 0; font-size: 21px; }
+    .dashboard-subtitle { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .dashboard-actions { display: flex; align-items: center; gap: 10px; }
+    .dashboard-actions button { min-height: 40px; padding: 0 14px; font-size: 10px; }
+    .dashboard-actions .button-secondary { border: 1px solid var(--line); background: #fff; color: var(--primary); }
+    .dashboard-actions .button-secondary:hover { border-color: var(--accent); background: #f2fbfe; color: #087dac; }
+    .summary-grid { padding: 22px 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; background: #f8fafb; border-bottom: 1px solid var(--line); }
+    .summary-card { min-height: 100px; padding: 17px 18px; border: 1px solid var(--line); background: #fff; }
+    .summary-label { margin: 0 0 12px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    .summary-value { margin: 0; font: 22px var(--display); color: var(--ink); }
+    .summary-detail { margin: 6px 0 0; color: var(--muted); font-size: 10px; }
+    .requests-area { padding: 22px 30px 30px; }
+    .requests-toolbar { min-height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .requests-toolbar .message { color: var(--muted); font-size: 11px; }
+    .table-wrap { margin-top: 13px; overflow-x: auto; border: 1px solid var(--line); }
+    table { width: 100%; min-width: 960px; border-collapse: collapse; background: #fff; }
+    th, td { padding: 15px 14px; border-bottom: 1px solid #e9eef0; text-align: left; vertical-align: top; font-size: 11px; line-height: 1.55; }
+    th { background: #f5f8f9; color: #647680; font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f7fcfe; }
+    td.notes { min-width: 190px; white-space: pre-wrap; color: var(--muted); }
+    .request-product { color: #087dac; font-weight: 700; }
+    .request-email { color: #087dac; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    footer { padding: 23px max(5%, calc((100% - 1240px) / 2)); border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
     footer p { margin: 0; }
-    @media (max-width: 600px) {
-      .site-header { min-height: 70px; padding: 10px 5%; }
-      .brand-logo { width: 155px; }
-      main { width: calc(100% - 32px); margin: 36px auto 56px; }
-      .dashboard-heading { align-items: start; flex-direction: column; }
+    @media (max-width: 760px) {
+      main { width: calc(100% - 36px); margin: 38px auto 58px; }
+      .page-intro { align-items: start; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+      .login-panel { grid-template-columns: 1fr; }
+      .login-aside { min-height: auto; padding: 30px; }
+      .login-aside-mark { margin-top: 24px; }
+      .login-form-side { padding: 30px; }
+      .dashboard-top { padding: 22px; }
+      .summary-grid { padding: 18px 22px; }
+      .requests-area { padding: 18px 22px 22px; }
       footer { padding: 20px 5%; }
+    }
+    @media (max-width: 520px) {
+      .site-header { min-height: 68px; padding: 10px 5%; }
+      .brand-logo { width: 145px; }
+      .header-actions { gap: 12px; }
+      .secure-label { font-size: 0; }
+      .secure-label::before { width: 8px; height: 8px; }
+      main { width: calc(100% - 28px); margin-top: 30px; }
+      .admin-badge { padding: 8px 10px; }
+      .login-aside, .login-form-side { padding: 24px 20px; }
+      .dashboard-top { align-items: start; flex-direction: column; padding: 20px; }
+      .dashboard-actions { width: 100%; }
+      .dashboard-actions button { flex: 1; }
+      .summary-grid { grid-template-columns: 1fr; gap: 9px; padding: 14px 20px; }
+      .summary-card { min-height: 0; padding: 14px 15px; }
+      .summary-label { margin-bottom: 7px; }
+      .summary-value { font-size: 18px; }
+      .requests-area { padding: 16px 20px 20px; }
     }
   </style>
 </head>
@@ -95,57 +158,108 @@
     <a href="Web app testing.html" aria-label="G Works - Doors and Windows home">
       <img class="brand-logo" src="g-works-logo.svg" alt="G Works">
     </a>
-    <a class="back-link" href="Web app testing.html">Back to site</a>
+    <div class="header-actions">
+      <span class="secure-label">Secure workspace</span>
+      <a class="back-link" href="Web app testing.html">Back to site</a>
+    </div>
   </header>
 
   <main>
-    <p class="eyebrow">G WORKS · PRIVATE ADMIN</p>
-    <h1>Order requests.</h1>
-    <p class="intro">Sign in with the authorized Supabase account to view customer requests. This page does not make order data public.</p>
+    <div class="page-intro">
+      <div>
+        <p class="eyebrow">G WORKS · PRIVATE ADMIN WORKSPACE</p>
+        <h1>Order requests.</h1>
+        <p class="intro">A clear view of customer enquiries, so your team can follow up with confidence. Order details remain protected by Supabase access policies.</p>
+      </div>
+      <span class="admin-badge">AUTHORIZED ACCESS ONLY</span>
+    </div>
 
-    <section class="panel" id="login-panel" aria-labelledby="login-heading">
-      <h2 id="login-heading">Admin sign in</h2>
-      <form class="login-form" id="login-form">
-        <div class="field">
-          <label for="admin-email">Admin email</label>
-          <input id="admin-email" name="email" type="email" autocomplete="username" value="vincemmbs@gmail.com" required>
+    <section class="panel login-panel" id="login-panel" aria-labelledby="login-heading">
+      <div class="login-aside">
+        <div>
+          <p class="eyebrow">G WORKS · OPERATIONS</p>
+          <h2>Every project begins with a conversation.</h2>
+          <p class="login-aside-copy">Sign in to review incoming window and door enquiries, customer contact details, and project notes.</p>
         </div>
-        <div class="field">
-          <label for="admin-password">Password</label>
-          <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
-        </div>
-        <button type="submit">Sign in and view requests</button>
-        <p class="message" id="login-message" role="status" aria-live="polite"></p>
-      </form>
+        <span class="login-aside-mark" aria-hidden="true"></span>
+      </div>
+      <div class="login-form-side">
+        <p class="panel-kicker">Administrator access</p>
+        <h2 class="panel-title" id="login-heading">Welcome back</h2>
+        <p class="panel-copy">Use your authorized Supabase account to continue to the order desk.</p>
+        <form class="login-form" id="login-form">
+          <div class="field">
+            <label for="admin-email">Email address</label>
+            <input id="admin-email" name="email" type="email" autocomplete="username" value="vincemmbs@gmail.com" required>
+          </div>
+          <div class="field">
+            <label for="admin-password">Password</label>
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit">Sign in to dashboard <span aria-hidden="true">→</span></button>
+          <p class="message" id="login-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </section>
 
-    <section class="panel" id="dashboard-panel" aria-labelledby="dashboard-heading" hidden>
-      <div class="dashboard-heading">
-        <h2 id="dashboard-heading">Submitted requests</h2>
-        <button id="sign-out" type="button">Sign out</button>
+    <section class="panel dashboard-panel" id="dashboard-panel" aria-labelledby="dashboard-heading" hidden>
+      <div class="dashboard-top">
+        <div class="dashboard-heading">
+          <span class="heading-icon" aria-hidden="true">↗</span>
+          <div>
+            <h2 id="dashboard-heading">Order inbox</h2>
+            <p class="dashboard-subtitle">Customer enquiries, newest first</p>
+          </div>
+        </div>
+        <div class="dashboard-actions">
+          <button class="button-secondary" id="refresh-orders" type="button">Refresh requests</button>
+          <button id="sign-out" type="button">Sign out</button>
+        </div>
       </div>
-      <p class="message" id="dashboard-message" role="status" aria-live="polite"></p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Received</th>
-              <th scope="col">Customer</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Product</th>
-              <th scope="col">Style</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Notes</th>
-            </tr>
-          </thead>
-          <tbody id="order-rows"></tbody>
-        </table>
+      <div class="summary-grid" aria-label="Order request summary">
+        <article class="summary-card">
+          <p class="summary-label">Total enquiries</p>
+          <p class="summary-value" id="total-orders">—</p>
+          <p class="summary-detail">Requests in your inbox</p>
+        </article>
+        <article class="summary-card">
+          <p class="summary-label">Latest request</p>
+          <p class="summary-value" id="latest-order">—</p>
+          <p class="summary-detail">Most recently received</p>
+        </article>
+        <article class="summary-card">
+          <p class="summary-label">Access status</p>
+          <p class="summary-value">Private</p>
+          <p class="summary-detail">Restricted to your admin account</p>
+        </article>
+      </div>
+      <div class="requests-area">
+        <div class="requests-toolbar">
+          <p class="panel-kicker">All requests</p>
+          <p class="message" id="dashboard-message" role="status" aria-live="polite"></p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Received</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Product</th>
+                <th scope="col">Style</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="order-rows"></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer><p>G Works - Doors and Windows · Private order dashboard</p></footer>
+  <footer><p>G Works - Doors and Windows <span aria-hidden="true">·</span> Private order dashboard</p></footer>
 
   <script>
     const supabaseUrl = "https://tjrzycdvbukcvqyyzrbe.supabase.co";
@@ -157,6 +271,8 @@
     const loginMessage = document.querySelector("#login-message");
     const dashboardMessage = document.querySelector("#dashboard-message");
     const orderRows = document.querySelector("#order-rows");
+    const totalOrders = document.querySelector("#total-orders");
+    const latestOrder = document.querySelector("#latest-order");
     const signInButton = loginForm.querySelector('button[type="submit"]');
     let accessToken = null;
 
@@ -194,14 +310,30 @@
       }
 
       const orders = await response.json();
+      totalOrders.textContent = String(orders.length);
+      if (orders.length) {
+        const latestDate = new Date(orders[0].created_at);
+        latestOrder.textContent = Number.isNaN(latestDate.getTime())
+          ? "Received"
+          : latestDate.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      } else {
+        latestOrder.textContent = "—";
+      }
+
       for (const order of orders) {
         const row = document.createElement("tr");
         const received = new Date(order.created_at);
         addCell(row, Number.isNaN(received.getTime()) ? "Unknown" : received.toLocaleString());
         addCell(row, order.customer_name);
-        addCell(row, order.customer_email);
+        const emailCell = document.createElement("td");
+        const emailLink = document.createElement("a");
+        emailLink.className = "request-email";
+        emailLink.href = `mailto:${encodeURIComponent(order.customer_email)}`;
+        emailLink.textContent = order.customer_email;
+        emailCell.append(emailLink);
+        row.append(emailCell);
         addCell(row, order.phone);
-        addCell(row, order.product);
+        addCell(row, order.product, "request-product");
         addCell(row, order.style);
         addCell(row, order.quantity);
         addCell(row, order.notes, "notes");
@@ -263,9 +395,24 @@
       }
     });
 
+    document.querySelector("#refresh-orders").addEventListener("click", async event => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        try {
+          await loadOrders();
+        } catch (error) {
+          console.error("Order refresh failed:", error);
+          setMessage(dashboardMessage, error instanceof Error ? error.message : "Could not refresh requests.", "error");
+        } finally {
+          button.disabled = false;
+        }
+    });
+
     document.querySelector("#sign-out").addEventListener("click", () => {
-      accessToken = null;
-      orderRows.replaceChildren();
+        accessToken = null;
+        orderRows.replaceChildren();
+        totalOrders.textContent = "—";
+        latestOrder.textContent = "—";
       dashboardPanel.hidden = true;
       loginPanel.hidden = false;
       setMessage(loginMessage, "You have signed out.", "success");
