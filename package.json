@@ -2,9 +2,11 @@
   "name": "web-app-testing",
   "version": "1.0.0",
   "private": true,
-  "description": "A responsive landing page concept for a windows and doors business. It includes product sections, an overview of the installation process, and a contact call-to-action. The Windows and Doors cards open `windows.html` and `doors.html` in new tabs with style examples and descriptions.",
+  "description": "A responsive landing page concept for a windows and doors business. It includes product sections, an overview of the installation process, and a contact call-to-action. The Window and Door pages are static HTML pages for the showroom experience.",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --open \"/Web%20app%20testing.html\""
+    "dev": "vite --host 0.0.0.0 --open \"/Web%20app%20testing.html\"",
+    "build": "vite build --emptyOutDir",
+    "preview": "vite preview --host 0.0.0.0 --port 4173"
   },
   "devDependencies": {
     "vite": "^8.3.4"
